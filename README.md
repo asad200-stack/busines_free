@@ -1,4 +1,4 @@
-# Multi-Store Platform (Next.js + Postgres + Prisma)
+1# Multi-Store Platform (Next.js + Postgres + Prisma)
 
 ## Local setup (Windows / PowerShell)
 
@@ -39,7 +39,7 @@ Open `http://localhost:3000`
 
 ## If you get Prisma error P1001 (Can't reach database)
 
-Your `DATABASE_URL` points to a Postgres server that is not running/reachable.
+Your `DATABASE_URL` points to a Postgres server that is not running/reachable.image.png
 
 ### Recommended: use Railway Postgres
 
@@ -52,3 +52,30 @@ Your `DATABASE_URL` points to a Postgres server that is not running/reachable.
 npm run db:migrate:dev
 npm run db:seed
 ```
+
+## Deploy to Railway (no Vercel)
+
+### Important (repo structure)
+
+If your GitHub repo root contains a folder named `multistore-platform/`, then in Railway you must set:
+
+- **Root Directory**: `multistore-platform`
+
+Otherwise Railway will fail with:
+`Couldn't find any pages or app directory`.
+
+### Steps
+
+1. Create a new Railway project
+2. Add a **PostgreSQL** database to the project
+3. Add a **Node.js** service connected to your GitHub repo
+4. In the service settings:
+   - **Root Directory**: `multistore-platform` (only if your repo has this folder)
+   - **Build Command**: `npm run build`
+   - **Start Command**: `npm start`
+5. Set environment variables:
+   - `SESSION_SECRET` = any long random string
+   - `DATABASE_URL` is usually provided automatically by Railway Postgres (verify it exists)
+6. Deploy
+
+On start, the app runs `prisma migrate deploy` automatically (see `npm start`).
